@@ -9,137 +9,185 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --primary: #4a6fa5;
-            --secondary: #6a67ce;
-            --accent: #ff7e5f;
-            --dark: #1e1e2d;
-            --light: #f8f9fa;
-        }
-        
-        body { 
-            background-color: #f1f5f9; 
-            font-family: 'Segoe UI', sans-serif; 
-        }
-        
-        .sidebar {
-            background: linear-gradient(180deg, var(--dark), #27293d);
-            min-height: 100vh; 
-            color: #fff;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-        }
-        
-        .sidebar a {
-            color: rgba(255,255,255,0.9); 
-            text-decoration: none;
-            padding: 12px 20px; 
-            display: flex; 
-            align-items: center;
-            font-weight: 500; 
-            transition: 0.2s;
-            border-left: 4px solid transparent;
-        }
-        
-        .sidebar a i {
-            margin-right: 10px; 
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-        
-        .sidebar a.active, .sidebar a:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-left: 4px solid var(--accent);
-        }
-        
-        .navbar-custom {
-            background: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 0.75rem 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .stat-card {
-            background-color: #fff; 
-            padding: 20px;
-            border-radius: 10px; 
-            color: #fff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            transition: transform 0.3s;
-            border-left: 4px solid;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-card .icon {
-            font-size: 28px; 
-            margin-bottom: 15px;
-            opacity: 0.8;
-        }
-        
-        .stat-card h5 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        
-        .bg-primary { background-color: var(--primary); border-color: var(--primary); }
-        .bg-secondary { background-color: var(--secondary); border-color: var(--secondary); }
-        .bg-accent { background-color: var(--accent); border-color: var(--accent); }
-        .bg-success { background-color: #10b981; border-color: #10b981; }
-        .bg-info { background-color: #3b82f6; border-color: #3b82f6; }
-        
-        .chart-container {
-            background: #ffffff;
-            border-radius: 10px; 
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .table-card {
-            background: #ffffff;
-            border-radius: 10px; 
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        
-        .table thead th {
-            border-bottom-width: 1px;
-            font-weight: 600;
-            color: #4b5563;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                min-height: auto;
-                width: 100%;
-            }
-            
-            .stat-card {
-                margin-bottom: 15px;
-            }
-        }
-        .chart-container {
+      :root {
+    --primary: #4a6fa5;
+    --secondary: #6a67ce;
+    --accent: #ff7e5f;
+    --dark: #1e1e2d;
+    --light: #f8f9fa;
+}
+
+body {
+    background-color: #f1f5f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    background: linear-gradient(180deg, var(--dark), #27293d);
+    color: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    z-index: 1030;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+.sidebar a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    transition: 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.sidebar a i {
+    margin-right: 10px;
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--accent);
+}
+
+/* Main content */
+main {
+    margin-left: 220px;
+    transition: margin-left 0.3s ease;
+}
+
+main.collapsed {
+    margin-left: 0 !important;
+}
+
+/* Navbar */
+.navbar-custom {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Stat cards */
+.stat-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+    border-left: 4px solid;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card .icon {
+    font-size: 28px;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.stat-card h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Warna utilitas */
+.bg-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.bg-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.bg-accent {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.bg-success {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+.bg-info {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* Grafik */
+.chart-container {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
     position: relative;
-    min-height: 300px; /* Tinggi minimum */
-    max-height: 400px; /* Tinggi maksimum */
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 canvas {
     width: 100% !important;
     height: 100% !important;
 }
+
+/* Tabel */
+.table-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+    border-bottom-width: 1px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: absolute;
+        z-index: 999;
+    }
+
+    main {
+        margin-left: 0 !important;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -251,7 +299,7 @@ canvas {
                 
                 <div class="col-lg-4">
                     <div class="chart-container h-100">
-                        <h5 class="fw-bold mb-4"><i class="mdi mdi-star me-2"></i>Barang Terlaris</h5>
+                        <h5 class="fw-bold mb-4"><i class="mdi mdi-star me-2"></i>Barang Terlaris Hari</h5>
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
                                 <thead>
